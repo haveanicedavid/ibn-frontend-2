@@ -2,6 +2,7 @@ import React from 'react'
 import axios from 'axios'
 import './App.css'
 import Chart from './components/chart'
+import { Navbar, NavItem } from 'react-materialize'
 
 const App = React.createClass({
   getInitialState () {
@@ -31,6 +32,10 @@ const App = React.createClass({
     })
     return (
       <div>
+        <Navbar brand='IBN Test' right>
+          <NavItem href='get-started.html'>Getting started</NavItem>
+          <NavItem href='components.html'>Components</NavItem>
+        </Navbar>
         <h1>Ohai</h1>
         <Chart chartData={ethToBtc} />
         <pre><code>{JSON.stringify(this.state.data)}</code></pre>
