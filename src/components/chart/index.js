@@ -18,13 +18,14 @@ const Chart = React.createClass({
         poloniex: string,
         btce: string
       })
-    }))
+    })),
+    title: string
   },
   render () {
     const formatDate = (d) => moment(d).format('HH:m a')
     return (
       <div>
-        <h1>Chart Title</h1>
+        <h3>{this.props.title}</h3>
         <LineChart width={800} height={300} data={this.props.chartData}
           margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
           <XAxis dataKey='created' tickCount={100} tickFormatter={formatDate} />

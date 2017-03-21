@@ -1,8 +1,16 @@
 import React from 'react'
+import {
+  BrowserRouter as Router,
+  Route,
+  Link
+} from 'react-router-dom'
 import axios from 'axios'
 import './App.css'
-import Chart from './components/chart'
-import { Navbar, NavItem } from 'react-materialize'
+import { Navbar } from 'react-materialize'
+
+// Routes
+import Home from './views/home'
+import Trends from './views/trends'
 
 const App = React.createClass({
   getInitialState () {
@@ -11,7 +19,7 @@ const App = React.createClass({
     }
   },
   componentDidMount () {
-    axios.get('http://localhost:8080/api/snaps/all')
+    axios.get('http://localhost:8080/api/snaps/recent')
       .then((res) => {
         this.setState({ data: res.data })
       })
@@ -20,29 +28,23 @@ const App = React.createClass({
       })
   },
   render () {
-    const dataList = this.state.data.map((obj) => {
-      return <li key={obj._id}>{obj._id}</li>
-    })
-    const ethToBtc = this.state.data.map((snap) => {
-      return {
-        created: Date.parse(snap.createdAt),
-        btce: snap.ethRates.btce,
-        poloniex: snap.ethRates.poloniex
-      }
-    })
+    const TrendsWithData = () => <Trends snaps={this.state.data} />
     return (
-      <div>
-        <Navbar brand='IBN Test' right>
-          <NavItem href='get-started.html'>Getting started</NavItem>
-          <NavItem href='components.html'>Components</NavItem>
-        </Navbar>
-        <h1>Ohai</h1>
-        <Chart chartData={ethToBtc} />
-        <pre><code>{JSON.stringify(this.state.data)}</code></pre>
-        <ul>
-          {dataList}
-        </ul>
-      </div>
+      <Router>
+        <div>
+          <Navbar className='teal' brand='IBN Test' right>
+            <ul>
+              <li> <Link to='/'>Home</Link> </li>
+              <li> <Link to='/trends'>Trends</Link> </li>
+            </ul>
+          </Navbar>
+
+          <hr />
+
+          <Route exact path='/' component={Home} />
+          <Route path='/trends' component={TrendsWithData} />
+        </div>
+      </Router>
     )
   }
 })
