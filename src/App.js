@@ -15,7 +15,7 @@ import Trends from './views/trends'
 const App = React.createClass({
   getInitialState () {
     return {
-      data: []
+      snaps: []
     }
   },
   componentDidMount () {
@@ -25,7 +25,7 @@ const App = React.createClass({
         .catch(err => console.log(err))
       // Fetch snaps
       axios.get('http://localhost:8080/api/snaps/recent')
-        .then(res => this.setState({ data: res.data }))
+        .then(res => this.setState({ snaps: res.data }))
         .catch(err => console.log(err))
     }
     fetchData()
@@ -36,20 +36,18 @@ const App = React.createClass({
     setInterval(fetchData, 60000)
   },
   render () {
-    const TrendsWithData = () => <Trends snaps={this.state.data} />
-    const HomeWithData = () => <Home data={this.state.data} />
     return (
       <Router>
         <div>
-          <Navbar className='indigo' brand='IBN Test' right>
+          <Navbar className='indigo darken-3' brand='IBN Test' right>
             <ul>
               <li> <Link to='/'>Home</Link> </li>
               <li> <Link to='/trends'>Trends</Link> </li>
             </ul>
           </Navbar>
 
-          <Route exact path='/' component={HomeWithData} />
-          <Route path='/trends' component={TrendsWithData} />
+          <Route exact path='/' component={() => <Home {...this.state} />} />
+          <Route path='/trends' component={() => <Trends {...this.state} />} />
         </div>
       </Router>
     )

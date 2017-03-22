@@ -1,23 +1,24 @@
 import React from 'react'
 import moment from 'moment'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts'
-const { shape, string, arrayOf } = React.PropTypes
+const { shape, string, arrayOf, number } = React.PropTypes
 
 const Chart = React.createClass({
   propTypes: {
     chartData: arrayOf(shape({
       ltcRates: shape({
-        poloniex: string,
-        btce: string
+        poloniex: number,
+        btce: number
       }),
       ethates: shape({
-        poloniex: string,
-        btce: string
+        poloniex: number,
+        btce: number
       }),
       dshRates: shape({
-        poloniex: string,
-        btce: string
-      })
+        poloniex: number,
+        btce: number
+      }),
+      createdAt: string
     })),
     coin: string,
     title: string

@@ -1,37 +1,68 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-const { array } = React.PropTypes
+import { Button } from 'react-materialize'
+const { arrayOf, shape, string, number } = React.PropTypes
 
-const Trends = React.createClass({
+const Home = React.createClass({
   propTypes: {
-    data: array
+    snaps: arrayOf(shape({
+      ltcRates: shape({
+        poloniex: number,
+        btce: number
+      }),
+      ethates: shape({
+        poloniex: number,
+        btce: number
+      }),
+      dshRates: shape({
+        poloniex: number,
+        btce: number
+      }),
+      createdAt: string
+    }))
+  },
+  getInitialState () {
+    return {
+      bestEth: '',
+      bestDsh: '',
+      bestLtc: '',
+      poloRates: {},
+      btceRates: {}
+    }
+  },
+  componentDidMount () {
+    this.setState({
+      bestEth: this.findBestRateProvider('ethRates'),
+      bestDsh: this.findBestRateProvider('dshRates'),
+      bestLtc: this.findBestRateProvider('ltcRates')
+    })
   },
   findBestRateProvider (coinKey) {
-    if (!this.props.data.length) return
-    const coinRates = this.props.data[this.props.data.length - 1][coinKey] // grab most recent coinRates
-    let lowestRate = 100000000
+    const snaps = this.props.snaps
+    if (!snaps || !snaps.length) return
+    const coinRates = snaps[snaps.length - 1][coinKey]
+    let lowestRate = Infinity
     let lowestRateProvider
     for (let vendor in coinRates) {
       if (coinRates[vendor] < lowestRate) {
-        lowestRate = coinRates[vendor]
         lowestRateProvider = vendor
       }
     }
     return lowestRateProvider
   },
   render () {
-    const bestEth = this.findBestRateProvider('ethRates')
-    const bestDsh = this.findBestRateProvider('dshRates')
-    const bestLtc = this.findBestRateProvider('ltcRates')
     return (
       <div className='center-align'>
-        <h1>Home page</h1>
-        <h3>Best BTC to ETH provider: <Link to='/trends'>{bestEth}</Link></h3>
-        <h3>Best BTC to DSH provider: <Link to='/trends'>{bestDsh}</Link></h3>
-        <h3>Best BTC to LTC provider: <Link to='/trends'>{bestLtc}</Link></h3>
+        <h1>Current Best Rate Provider:</h1>
+        <h3>BTC to ETH: {this.state.bestEth}</h3>
+        <h3>BTC to DSH: {this.state.bestDsh}</h3>
+        <h3>BTC to LTC: {this.state.bestLtc}</h3>
+        <Link to='/trends'>
+          <Button waves='light' className='indigo darken-3'>View Trends</Button>
+        </Link>
       </div>
     )
   }
 })
 
-export default Trends
+export default Home
