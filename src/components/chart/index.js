@@ -23,8 +23,8 @@ const Chart = React.createClass({
     title: string
   },
   render () {
-    const formatDate = (d) => moment(d).format('h:m a')
-    const formatDateVerbose = (d) => moment(d).format('M/D/YY h:m:s a')
+    const formatDate = (d) => moment(d).format('h:mm a')
+    const formatDateVerbose = (d) => moment(d).format('M/D/YY h:mm:ss a')
     const formatTooltip = (rate) => `1 BTC = ${1 / rate} ${this.props.coin}`
     return (
       <div className='center-align'>
@@ -36,8 +36,8 @@ const Chart = React.createClass({
           <CartesianGrid strokeDasharray='1 1' />
           <Tooltip labelFormatter={formatDateVerbose} formatter={formatTooltip} />
           <Legend />
-          <Line type='monotone' dataKey='btce' stroke='#8884d8' activeDot={{ r: 8 }} />
-          <Line type='monotone' dataKey='poloniex' stroke='#82ca9d' activeDot={{ r: 8 }} />
+          <Line type='monotone' dataKey='BTC-E' stroke='#8884d8' activeDot={{ r: 8 }} />
+          <Line type='monotone' dataKey='Poloniex' stroke='#82ca9d' activeDot={{ r: 8 }} />
         </LineChart>
       </div>
     )
