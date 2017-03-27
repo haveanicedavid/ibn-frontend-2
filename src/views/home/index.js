@@ -45,6 +45,7 @@ const Home = React.createClass({
     let lowestRateProvider
     for (let vendor in coinRates) {
       if (coinRates[vendor] < lowestRate) {
+        lowestRate = coinRates[vendor]
         lowestRateProvider = vendor
       }
     }
